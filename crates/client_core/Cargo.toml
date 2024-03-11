@@ -13,6 +13,7 @@ keywords = ["postgresql", "query", "generator", "sql", "tokio-postgres"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
+js = ["postgres-protocol/js", "postgres-types/js"]
 with-serde_json-1 = ["postgres-types/with-serde_json-1", "serde", "serde_json"]
 
 [dependencies]
