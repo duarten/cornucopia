@@ -127,7 +127,7 @@ dependencies = [
  "cornucopia_async",
  "deadpool-postgres",
  "futures",
- "postgres-types",
+ "postgres-types 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "tokio",
  "tokio-postgres",
 ]
@@ -169,13 +169,19 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9ba43ea6f343b788c8764558649e08df62f86c6ef251fdaeb1ffd010a9ae50a2"
 
 [[package]]
+name = "base64"
+version = "0.22.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9475866fec1451be56a3c2400fd081ff546538961565ccb5b7142cbd22bc7a51"
+
+[[package]]
 name = "basic-async"
 version = "0.1.0"
 dependencies = [
  "cornucopia_async",
  "deadpool-postgres",
  "futures",
- "postgres-types",
+ "postgres-types 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "tokio",
  "tokio-postgres",
 ]
@@ -186,7 +192,7 @@ version = "0.1.0"
 dependencies = [
  "cornucopia_sync",
  "postgres",
- "postgres-types",
+ "postgres-types 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -200,7 +206,7 @@ dependencies = [
  "diesel",
  "futures",
  "postgres",
- "postgres-types",
+ "postgres-types 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "tokio",
  "tokio-postgres",
 ]
@@ -446,7 +452,7 @@ dependencies = [
  "indexmap",
  "miette",
  "postgres",
- "postgres-types",
+ "postgres-types 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "thiserror",
 ]
 
@@ -465,8 +471,8 @@ name = "cornucopia_client_core"
 version = "0.4.0"
 dependencies = [
  "fallible-iterator",
- "postgres-protocol",
- "postgres-types",
+ "postgres-protocol 0.6.6 (git+https://github.com/duarten/rust-postgres.git?branch=postgres-types-js)",
+ "postgres-types 0.2.6 (git+https://github.com/duarten/rust-postgres.git?branch=postgres-types-js)",
  "serde",
  "serde_json",
 ]
@@ -818,8 +824,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "be4136b2a15dd319360be1c07d9933517ccf0be8f16bf62a3bee4f0d618df427"
 dependencies = [
  "cfg-if",
+ "js-sys",
  "libc",
  "wasi",
+ "wasm-bindgen",
 ]
 
 [[package]]
@@ -1200,10 +1208,29 @@ version = "0.6.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "49b6c5ef183cd3ab4ba005f1ca64c21e8bd97ce4699cfea9e8d9a2c4958ca520"
 dependencies = [
- "base64",
+ "base64 0.21.4",
  "byteorder",
  "bytes",
  "fallible-iterator",
+ "getrandom",
+ "hmac",
+ "md-5",
+ "memchr",
+ "rand",
+ "sha2",
+ "stringprep",
+]
+
+[[package]]
+name = "postgres-protocol"
+version = "0.6.6"
+source = "git+https://github.com/duarten/rust-postgres.git?branch=postgres-types-js#4c4fba8d10ea466a45e54c86cbe1aa75537df5e5"
+dependencies = [
+ "base64 0.22.0",
+ "byteorder",
+ "bytes",
+ "fallible-iterator",
+ "getrandom",
  "hmac",
  "md-5",
  "memchr",
@@ -1222,11 +1249,23 @@ dependencies = [
  "eui48",
  "fallible-iterator",
  "postgres-derive",
- "postgres-protocol",
+ "postgres-protocol 0.6.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde",
  "serde_json",
  "time",
  "uuid",
+]
+
+[[package]]
+name = "postgres-types"
+version = "0.2.6"
+source = "git+https://github.com/duarten/rust-postgres.git?branch=postgres-types-js#4c4fba8d10ea466a45e54c86cbe1aa75537df5e5"
+dependencies = [
+ "bytes",
+ "fallible-iterator",
+ "postgres-protocol 0.6.6 (git+https://github.com/duarten/rust-postgres.git?branch=postgres-types-js)",
+ "serde",
+ "serde_json",
 ]
 
 [[package]]
@@ -1733,7 +1772,7 @@ dependencies = [
  "eui48",
  "futures",
  "postgres",
- "postgres-types",
+ "postgres-types 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "rust_decimal",
  "serde",
  "serde_json",
@@ -1886,8 +1925,8 @@ dependencies = [
  "percent-encoding",
  "phf",
  "pin-project-lite",
- "postgres-protocol",
- "postgres-types",
+ "postgres-protocol 0.6.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "postgres-types 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
  "rand",
  "socket2",
  "tokio",
