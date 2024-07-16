@@ -1,5 +1,6 @@
 mod cli;
 mod codegen;
+mod config;
 mod error;
 mod load_schema;
 mod parser;
@@ -16,6 +17,7 @@ pub mod container;
 
 use std::path::Path;
 
+use config::Config;
 use postgres::Client;
 
 use codegen::generate as generate_internal;
@@ -31,11 +33,12 @@ pub use error::Error;
 pub use load_schema::load_schema;
 
 /// Struct containing the settings for code generation.
-#[derive(Clone, Copy)]
+#[derive(Clone)]
 pub struct CodegenSettings {
     pub gen_async: bool,
     pub gen_sync: bool,
     pub derive_ser: bool,
+    pub config: Config,
 }
 
 /// Generates Rust queries from PostgreSQL queries located at `queries_path`,
@@ -54,7 +57,7 @@ pub fn generate_live<P: AsRef<Path>>(
         .map(parse_query_module)
         .collect::<Result<_, parser::error::Error>>()?;
     // Generate
-    let prepared_modules = prepare(client, modules)?;
+    let prepared_modules = prepare(client, modules, settings.clone())?;
     let generated_code = generate_internal(prepared_modules, settings);
     // Write
     if let Some(d) = destination {
@@ -86,7 +89,7 @@ pub fn generate_managed<P: AsRef<Path>>(
     container::setup(podman)?;
     let mut client = conn::cornucopia_conn()?;
     load_schema(&mut client, schema_files)?;
-    let prepared_modules = prepare(&mut client, modules)?;
+    let prepared_modules = prepare(&mut client, modules, settings.clone())?;
     let generated_code = generate_internal(prepared_modules, settings);
     container::cleanup(podman)?;
 

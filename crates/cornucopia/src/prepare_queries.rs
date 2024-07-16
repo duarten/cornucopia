@@ -9,10 +9,9 @@ use crate::{
     codegen::GenCtx,
     parser::{Module, NullableIdent, Query, Span, TypeAnnotation},
     read_queries::ModuleInfo,
-    type_registrar::CornucopiaType,
-    type_registrar::TypeRegistrar,
+    type_registrar::{CornucopiaType, TypeRegistrar},
     utils::KEYWORD,
-    validation,
+    validation, CodegenSettings,
 };
 
 use self::error::Error;
@@ -226,8 +225,12 @@ impl PreparedModule {
 }
 
 /// Prepares all modules
-pub(crate) fn prepare(client: &mut Client, modules: Vec<Module>) -> Result<Preparation, Error> {
-    let mut registrar = TypeRegistrar::default();
+pub(crate) fn prepare(
+    client: &mut Client,
+    modules: Vec<Module>,
+    settings: CodegenSettings,
+) -> Result<Preparation, Error> {
+    let mut registrar = TypeRegistrar::new(settings.config.custom_type_map);
     let mut tmp = Preparation {
         modules: Vec::new(),
         types: IndexMap::new(),
@@ -244,16 +247,12 @@ pub(crate) fn prepare(client: &mut Client, modules: Vec<Module>) -> Result<Prepa
     }
 
     // Prepare types grouped by schema
-    for ((schema, name), ty) in &registrar.types {
-        if let Some(ty) = prepare_type(&registrar, name, ty, &declared) {
-            match tmp.types.entry(schema.clone()) {
-                Entry::Occupied(mut entry) => {
-                    entry.get_mut().push(ty);
-                }
-                Entry::Vacant(entry) => {
-                    entry.insert(vec![ty]);
-                }
-            }
+    for (schema_key, ty) in registrar.types() {
+        if let Some(ty) = prepare_type(&registrar, schema_key.name, ty, &declared) {
+            tmp.types
+                .entry(schema_key.schema.to_owned())
+                .or_default()
+                .push(ty);
         }
     }
     Ok(tmp)
@@ -301,7 +300,9 @@ fn prepare_type(
                     })
                     .collect(),
             ),
-            _ => unreachable!(),
+            _ => {
+                return None;
+            }
         };
         Some(PreparedType {
             name: name.to_string(),

@@ -77,6 +77,7 @@ impl From<&CodegenTest> for CodegenSettings {
             gen_async: codegen_test.r#async || !codegen_test.sync,
             gen_sync: codegen_test.sync,
             derive_ser: codegen_test.derive_ser,
+            config: Default::default(),
         }
     }
 }
@@ -96,6 +97,7 @@ impl From<&ErrorTest> for CodegenSettings {
             derive_ser: false,
             gen_async: false,
             gen_sync: true,
+            config: Default::default(),
         }
     }
 }

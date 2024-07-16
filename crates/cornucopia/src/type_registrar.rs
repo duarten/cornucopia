@@ -1,4 +1,4 @@
-use std::rc::Rc;
+use std::{collections::HashMap, rc::Rc};
 
 use heck::ToUpperCamelCase;
 use indexmap::{map::Entry, IndexMap};
@@ -18,7 +18,7 @@ use self::error::Error;
 pub(crate) enum CornucopiaType {
     Simple {
         pg_ty: Type,
-        rust_name: &'static str,
+        rust_name: String,
         is_copy: bool,
     },
     Array {
@@ -33,6 +33,7 @@ pub(crate) enum CornucopiaType {
         struct_name: String,
         is_copy: bool,
         is_params: bool,
+        is_mapped: bool,
     },
 }
 
@@ -169,6 +170,11 @@ impl CornucopiaType {
             }
             CornucopiaType::Domain { inner, .. } => inner.own_ty(false, ctx),
             CornucopiaType::Custom {
+                is_mapped,
+                struct_name,
+                ..
+            } if *is_mapped => struct_name.to_string(),
+            CornucopiaType::Custom {
                 struct_name, pg_ty, ..
             } => custom_ty_path(pg_ty.schema(), struct_name, ctx),
         }
@@ -287,9 +293,14 @@ impl CornucopiaType {
                 is_copy,
                 pg_ty,
                 struct_name,
+                is_mapped,
                 ..
             } => {
-                let path = custom_ty_path(pg_ty.schema(), struct_name, ctx);
+                let path = if *is_mapped {
+                    struct_name.to_string()
+                } else {
+                    custom_ty_path(pg_ty.schema(), struct_name, ctx)
+                };
                 if *is_copy {
                     path
                 } else {
@@ -311,12 +322,27 @@ pub fn custom_ty_path(schema: &str, struct_name: &str, ctx: &GenCtx) -> String {
 }
 
 /// Data structure holding all types known to this particular run of Cornucopia.
-#[derive(Debug, Clone, Default)]
+#[derive(Debug, Clone)]
 pub(crate) struct TypeRegistrar {
-    pub types: IndexMap<(String, String), Rc<CornucopiaType>>,
+    types: IndexMap<(String, String), Rc<CornucopiaType>>,
+    type_mappings: HashMap<String, String>,
 }
 
 impl TypeRegistrar {
+    /// Create a new type registrar using the specified type mappings.
+    pub(crate) fn new(type_mappings: HashMap<String, String>) -> Self {
+        Self {
+            types: IndexMap::new(),
+            type_mappings,
+        }
+    }
+
+    pub(crate) fn types(&self) -> impl Iterator<Item = (SchemaKey, &CornucopiaType)> {
+        self.types
+            .iter()
+            .map(|((schema, name), ty)| (SchemaKey::new(schema, name), ty.as_ref()))
+    }
+
     pub(crate) fn register(
         &mut self,
         name: &str,
@@ -331,6 +357,7 @@ impl TypeRegistrar {
                 struct_name: rust_ty_name,
                 is_copy,
                 is_params,
+                is_mapped: false,
             }
         }
 
@@ -343,6 +370,23 @@ impl TypeRegistrar {
 
         if let Some(idx) = self.types.get_index_of(&SchemaKey::from(ty)) {
             return Ok(&self.types[idx]);
+        }
+
+        if let Some(mapped_type) = self.type_mappings.get(ty.name()).cloned() {
+            if matches!(mapped_type.as_str(), "String" | "str") {
+                return Ok(self.insert(ty, move || CornucopiaType::Simple {
+                    pg_ty: Type::VARCHAR,
+                    rust_name: "String".to_string(),
+                    is_copy: false,
+                }));
+            }
+            return Ok(self.insert(ty, move || CornucopiaType::Custom {
+                pg_ty: ty.clone(),
+                is_copy: false,
+                struct_name: mapped_type,
+                is_params: true,
+                is_mapped: true,
+            }));
         }
 
         Ok(match ty.kind() {
@@ -397,12 +441,12 @@ impl TypeRegistrar {
                             query: query_name.span,
                             col_name: name.to_string(),
                             col_ty: ty.to_string(),
-                        })
+                        });
                     }
                 };
                 self.insert(ty, || CornucopiaType::Simple {
                     pg_ty: ty.clone(),
-                    rust_name,
+                    rust_name: rust_name.to_owned(),
                     is_copy,
                 })
             }
@@ -412,7 +456,7 @@ impl TypeRegistrar {
                     query: query_name.span,
                     col_name: name.to_string(),
                     col_ty: ty.to_string(),
-                })
+                });
             }
         })
     }
@@ -424,7 +468,7 @@ impl TypeRegistrar {
             .clone()
     }
 
-    fn insert(&mut self, ty: &Type, call: impl Fn() -> CornucopiaType) -> &Rc<CornucopiaType> {
+    fn insert(&mut self, ty: &Type, call: impl FnOnce() -> CornucopiaType) -> &Rc<CornucopiaType> {
         let index = match self
             .types
             .entry((ty.schema().to_owned(), ty.name().to_owned()))

@@ -5,8 +5,17 @@ use postgres_types::Type;
 /// Allows us to query a map using type schema as key without having to own the key strings
 #[derive(PartialEq, Eq, Hash)]
 pub struct SchemaKey<'a> {
-    schema: &'a str,
-    name: &'a str,
+    /// The schema of this type.
+    pub schema: &'a str,
+    /// The name of this type.
+    pub name: &'a str,
+}
+
+impl<'a> SchemaKey<'a> {
+    /// Creates a new [`SchemaKey`] from the specified components.
+    pub fn new(schema: &'a str, name: &'a str) -> Self {
+        SchemaKey { schema, name }
+    }
 }
 
 impl<'a> From<&'a Type> for SchemaKey<'a> {

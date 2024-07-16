@@ -33,3 +33,7 @@ heck = "0.4.0"
 
 # Order-preserving map to work around borrowing issues
 indexmap = "2.0.2"
+
+# Config handling
+serde = { version = "1.0.203", features = ["derive"] }
+toml = "0.8.14"
