@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 # Cornucopia async client
-## If you're trying this example as a standalone crate, 
+## If you're trying this example as a standalone crate,
 ## replace the path with the latest current version
 cornucopia_async = { path = "../../crates/client_async" }
 
@@ -16,13 +16,13 @@ tokio = { version = "1.24.2", features = ["full"] }
 futures = "0.3.25"
 
 # Postgres interaction
-tokio-postgres = "0.7.7"
-postgres-types = "0.2.4"
+tokio-postgres = { git = "https://github.com/sfackler/rust-postgres.git", rev = "a1bdd0bf15325cdc05fcfe3c0671953b2a8c7981" }
+postgres-types = { git = "https://github.com/sfackler/rust-postgres.git", rev = "a1bdd0bf15325cdc05fcfe3c0671953b2a8c7981" }
 ## Connection pooling
 deadpool-postgres = "0.12.1"
 
 [build-dependencies]
 # Cornucopia library to automatically
-## If you're trying this example as a standalone crate, 
+## If you're trying this example as a standalone crate,
 ## replace the path with the latest current version
 cornucopia = { path = "../../crates/cornucopia" }

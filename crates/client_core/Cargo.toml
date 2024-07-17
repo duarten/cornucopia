@@ -18,8 +18,9 @@ with-serde_json-1 = ["postgres-types/with-serde_json-1", "serde", "serde_json"]
 
 [dependencies]
 # Postgres interaction
-postgres-protocol = { git = "https://github.com/duarten/rust-postgres.git", branch = "postgres-types-js" }
-postgres-types = { git = "https://github.com/duarten/rust-postgres.git", branch = "postgres-types-js" }
+postgres-protocol = { git = "https://github.com/sfackler/rust-postgres.git", rev = "a1bdd0bf15325cdc05fcfe3c0671953b2a8c7981" }
+postgres-types = { git = "https://github.com/sfackler/rust-postgres.git", rev = "a1bdd0bf15325cdc05fcfe3c0671953b2a8c7981" }
+
 ## Iterator utils required for working with `postgres_protocol::types::ArrayValues`
 fallible-iterator = "0.2.0"
 

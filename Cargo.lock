@@ -110,13 +110,13 @@ checksum = "96d30a06541fbafbc7f82ed10c06164cfbd2c401138f6addd8404629c4b16711"
 
 [[package]]
 name = "async-trait"
-version = "0.1.74"
+version = "0.1.81"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a66537f1bb974b254c98ed142ff995236e81b9d0fe4db0575f46612cb15eb0f9"
+checksum = "6e0c28dcc82d7c8ead5cb13beb15405b57b8546e93215673ff8ca0349a028107"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.38",
+ "syn 2.0.71",
 ]
 
 [[package]]
@@ -125,9 +125,9 @@ version = "0.1.0"
 dependencies = [
  "cornucopia",
  "cornucopia_async",
- "deadpool-postgres",
+ "deadpool-postgres 0.12.1",
  "futures",
- "postgres-types 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "postgres-types",
  "tokio",
  "tokio-postgres",
 ]
@@ -164,12 +164,6 @@ dependencies = [
 
 [[package]]
 name = "base64"
-version = "0.21.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9ba43ea6f343b788c8764558649e08df62f86c6ef251fdaeb1ffd010a9ae50a2"
-
-[[package]]
-name = "base64"
 version = "0.22.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "9475866fec1451be56a3c2400fd081ff546538961565ccb5b7142cbd22bc7a51"
@@ -179,9 +173,9 @@ name = "basic-async"
 version = "0.1.0"
 dependencies = [
  "cornucopia_async",
- "deadpool-postgres",
+ "deadpool-postgres 0.12.1",
  "futures",
- "postgres-types 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "postgres-types",
  "tokio",
  "tokio-postgres",
 ]
@@ -192,7 +186,7 @@ version = "0.1.0"
 dependencies = [
  "cornucopia_sync",
  "postgres",
- "postgres-types 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "postgres-types",
 ]
 
 [[package]]
@@ -206,7 +200,7 @@ dependencies = [
  "diesel",
  "futures",
  "postgres",
- "postgres-types 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "postgres-types",
  "tokio",
  "tokio-postgres",
 ]
@@ -415,10 +409,10 @@ version = "4.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0862016ff20d69b84ef8247369fabf5c008a7417002411897d40ee1f4532b873"
 dependencies = [
- "heck",
+ "heck 0.4.1",
  "proc-macro2",
  "quote",
- "syn 2.0.38",
+ "syn 2.0.71",
 ]
 
 [[package]]
@@ -448,11 +442,11 @@ dependencies = [
  "chumsky",
  "clap",
  "codegen_template",
- "heck",
+ "heck 0.4.1",
  "indexmap",
  "miette",
  "postgres",
- "postgres-types 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "postgres-types",
  "thiserror",
 ]
 
@@ -462,7 +456,7 @@ version = "0.6.0"
 dependencies = [
  "async-trait",
  "cornucopia_client_core",
- "deadpool-postgres",
+ "deadpool-postgres 0.14.0",
  "tokio-postgres",
 ]
 
@@ -471,8 +465,8 @@ name = "cornucopia_client_core"
 version = "0.4.0"
 dependencies = [
  "fallible-iterator",
- "postgres-protocol 0.6.6 (git+https://github.com/duarten/rust-postgres.git?branch=postgres-types-js)",
- "postgres-types 0.2.6 (git+https://github.com/duarten/rust-postgres.git?branch=postgres-types-js)",
+ "postgres-protocol",
+ "postgres-types",
  "serde",
  "serde_json",
 ]
@@ -586,12 +580,37 @@ dependencies = [
 ]
 
 [[package]]
+name = "deadpool"
+version = "0.12.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6541a3916932fe57768d4be0b1ffb5ec7cbf74ca8c903fdfd5c0fe8aa958f0ed"
+dependencies = [
+ "deadpool-runtime",
+ "num_cpus",
+ "tokio",
+]
+
+[[package]]
 name = "deadpool-postgres"
 version = "0.12.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bda39fa1cfff190d8924d447ad04fd22772c250438ca5ce1dfb3c80621c05aaa"
 dependencies = [
- "deadpool",
+ "deadpool 0.10.0",
+ "tokio",
+ "tokio-postgres",
+ "tracing",
+]
+
+[[package]]
+name = "deadpool-postgres"
+version = "0.14.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1ab8a4ea925ce79678034870834602a2980f4b88c09e97feb266496dbb4493d2"
+dependencies = [
+ "async-trait",
+ "deadpool 0.12.1",
+ "getrandom",
  "tokio",
  "tokio-postgres",
  "tracing",
@@ -638,7 +657,7 @@ dependencies = [
  "diesel_table_macro_syntax",
  "proc-macro2",
  "quote",
- "syn 2.0.38",
+ "syn 2.0.71",
 ]
 
 [[package]]
@@ -647,7 +666,7 @@ version = "0.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fc5557efc453706fed5e4fa85006fe9817c224c3f480a34c7e5959fd700921c5"
 dependencies = [
- "syn 2.0.38",
+ "syn 2.0.71",
 ]
 
 [[package]]
@@ -774,7 +793,7 @@ checksum = "89ca545a94061b6365f2c7355b4b32bd20df3ff95f02da9329b34ccc3bd6ee72"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.38",
+ "syn 2.0.71",
 ]
 
 [[package]]
@@ -871,6 +890,12 @@ name = "heck"
 version = "0.4.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "95505c38b4572b2d910cecb0281560f54b440a19336cbbcb27bf6ce6adc6f5a8"
+
+[[package]]
+name = "heck"
+version = "0.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea"
 
 [[package]]
 name = "hermit-abi"
@@ -1020,7 +1045,7 @@ checksum = "49e7bc1560b95a3c4a25d03de42fe76ca718ab92d1a22a55b9b4cf67b3ae635c"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.38",
+ "syn 2.0.71",
 ]
 
 [[package]]
@@ -1193,40 +1218,20 @@ dependencies = [
 [[package]]
 name = "postgres-derive"
 version = "0.4.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "83145eba741b050ef981a9a1838c843fa7665e154383325aa8b440ae703180a2"
+source = "git+https://github.com/sfackler/rust-postgres.git?rev=a1bdd0bf15325cdc05fcfe3c0671953b2a8c7981#a1bdd0bf15325cdc05fcfe3c0671953b2a8c7981"
 dependencies = [
- "heck",
+ "heck 0.5.0",
  "proc-macro2",
  "quote",
- "syn 2.0.38",
+ "syn 2.0.71",
 ]
 
 [[package]]
 name = "postgres-protocol"
 version = "0.6.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "49b6c5ef183cd3ab4ba005f1ca64c21e8bd97ce4699cfea9e8d9a2c4958ca520"
+source = "git+https://github.com/sfackler/rust-postgres.git?rev=a1bdd0bf15325cdc05fcfe3c0671953b2a8c7981#a1bdd0bf15325cdc05fcfe3c0671953b2a8c7981"
 dependencies = [
- "base64 0.21.4",
- "byteorder",
- "bytes",
- "fallible-iterator",
- "getrandom",
- "hmac",
- "md-5",
- "memchr",
- "rand",
- "sha2",
- "stringprep",
-]
-
-[[package]]
-name = "postgres-protocol"
-version = "0.6.6"
-source = "git+https://github.com/duarten/rust-postgres.git?branch=postgres-types-js#4c4fba8d10ea466a45e54c86cbe1aa75537df5e5"
-dependencies = [
- "base64 0.22.0",
+ "base64",
  "byteorder",
  "bytes",
  "fallible-iterator",
@@ -1242,30 +1247,17 @@ dependencies = [
 [[package]]
 name = "postgres-types"
 version = "0.2.6"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8d2234cdee9408b523530a9b6d2d6b373d1db34f6a8e51dc03ded1828d7fb67c"
+source = "git+https://github.com/sfackler/rust-postgres.git?rev=a1bdd0bf15325cdc05fcfe3c0671953b2a8c7981#a1bdd0bf15325cdc05fcfe3c0671953b2a8c7981"
 dependencies = [
  "bytes",
  "eui48",
  "fallible-iterator",
  "postgres-derive",
- "postgres-protocol 0.6.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "postgres-protocol",
  "serde",
  "serde_json",
  "time",
  "uuid",
-]
-
-[[package]]
-name = "postgres-types"
-version = "0.2.6"
-source = "git+https://github.com/duarten/rust-postgres.git?branch=postgres-types-js#4c4fba8d10ea466a45e54c86cbe1aa75537df5e5"
-dependencies = [
- "bytes",
- "fallible-iterator",
- "postgres-protocol 0.6.6 (git+https://github.com/duarten/rust-postgres.git?branch=postgres-types-js)",
- "serde",
- "serde_json",
 ]
 
 [[package]]
@@ -1300,9 +1292,9 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.69"
+version = "1.0.86"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "134c189feb4956b20f6f547d2cf727d4c0fe06722b20a0eec87ed445a97f92da"
+checksum = "5e719e8df665df0d1c8fbfd238015744736151d4445ec0836b8e628aae103b77"
 dependencies = [
  "unicode-ident",
 ]
@@ -1338,9 +1330,9 @@ dependencies = [
 
 [[package]]
 name = "quote"
-version = "1.0.33"
+version = "1.0.36"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5267fca4496028628a95160fc423a33e8b2e6af8a5302579e322e4b520293cae"
+checksum = "0fa76aaf39101c457836aec0ce2316dbdc3ab723cdda1c6bd4e6ad4208acaca7"
 dependencies = [
  "proc-macro2",
 ]
@@ -1562,7 +1554,7 @@ checksum = "1e48d1f918009ce3145511378cf68d613e3b3d9137d67272562080d68a2b32d5"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.38",
+ "syn 2.0.71",
 ]
 
 [[package]]
@@ -1725,9 +1717,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.38"
+version = "2.0.71"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e96b79aaa137db8f61e26363a0c9b47d8b4ec75da28b7d1d614c2303e232408b"
+checksum = "b146dcf730474b4bcd16c311627b31ede9ab149045db4d6088b3becaea046462"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1772,7 +1764,7 @@ dependencies = [
  "eui48",
  "futures",
  "postgres",
- "postgres-types 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "postgres-types",
  "rust_decimal",
  "serde",
  "serde_json",
@@ -1822,7 +1814,7 @@ checksum = "10712f02019e9288794769fba95cd6847df9874d49d871d062172f9dd41bc4cc"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.38",
+ "syn 2.0.71",
 ]
 
 [[package]]
@@ -1905,14 +1897,13 @@ checksum = "630bdcf245f78637c13ec01ffae6187cca34625e8c63150d424b59e55af2675e"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.38",
+ "syn 2.0.71",
 ]
 
 [[package]]
 name = "tokio-postgres"
 version = "0.7.10"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d340244b32d920260ae7448cb72b6e238bddc3d4f7603394e7dd46ed8e48f5b8"
+source = "git+https://github.com/sfackler/rust-postgres.git?rev=a1bdd0bf15325cdc05fcfe3c0671953b2a8c7981#a1bdd0bf15325cdc05fcfe3c0671953b2a8c7981"
 dependencies = [
  "async-trait",
  "byteorder",
@@ -1925,8 +1916,8 @@ dependencies = [
  "percent-encoding",
  "phf",
  "pin-project-lite",
- "postgres-protocol 0.6.6 (registry+https://github.com/rust-lang/crates.io-index)",
- "postgres-types 0.2.6 (registry+https://github.com/rust-lang/crates.io-index)",
+ "postgres-protocol",
+ "postgres-types",
  "rand",
  "socket2",
  "tokio",
@@ -2010,7 +2001,7 @@ checksum = "34704c8d6ebcbc939824180af020566b01a7c01f80641264eba0999f6c2b6be7"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.38",
+ "syn 2.0.71",
 ]
 
 [[package]]
@@ -2137,7 +2128,7 @@ dependencies = [
  "once_cell",
  "proc-macro2",
  "quote",
- "syn 2.0.38",
+ "syn 2.0.71",
  "wasm-bindgen-shared",
 ]
 
@@ -2159,7 +2150,7 @@ checksum = "54681b18a46765f095758388f2d0cf16eb8d4169b639ab575a8f5693af210c7b"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.38",
+ "syn 2.0.71",
  "wasm-bindgen-backend",
  "wasm-bindgen-shared",
 ]

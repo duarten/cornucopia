@@ -7,3 +7,7 @@ members = [
     "benches",
     "crates/*",
 ]
+
+[patch.crates-io]
+postgres-types = { git = "https://github.com/sfackler/rust-postgres.git", rev = "a1bdd0bf15325cdc05fcfe3c0671953b2a8c7981" }
+tokio-postgres = { git = "https://github.com/sfackler/rust-postgres.git", rev = "a1bdd0bf15325cdc05fcfe3c0671953b2a8c7981" }
